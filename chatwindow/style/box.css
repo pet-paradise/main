@@ -1,0 +1,88 @@
+body {
+	overflow: hidden;
+}
+
+
+#chat-form {
+	overflow: hidden;
+}
+
+#chatbot-name{
+	position: absolute; 
+	margin: 15px; 
+	font-weight: bold; 
+	font-size: x-large; 
+	font-family: Calibri; 
+	width: 200px;
+}
+
+#chat-header{
+	border-style: solid; 
+	border-width: 3px; 
+	border-color: #3CB789 #3CB789 #E3F0EA #3CB789; 
+	border-top-left-radius: 7px; 
+	border-top-right-radius: 7px; 
+	background-color: #00D689; 
+	position: absolute; 
+	height: 60px; 
+	top: 0px; 
+	right: 0px; 
+	left: 0px; 
+	z-index: 2;
+}
+
+#chat-container{
+	background-color: #FFFFFF; 
+	position: absolute; 
+	width: 300px; 
+	height: 346px; 
+	bottom: 40px; 
+	right: 0px; 
+	left: 0px; 
+	overflow:auto; 
+	z-index: 1;
+}
+
+.chatbot-message{
+	border-radius: 7px; 
+	margin: 10px 20px 10px 40px; 
+	padding: 20px; 
+	font-family: Calibri; 
+	font-size: medium; 
+	color: #000000; 
+	background-color: #F2F6FA; 
+	width: 150px;
+}
+
+.user-message{
+	border-radius: 7px; 
+	margin: 10px 20px 10px 40px; 
+	padding: 20px; 
+	font-family: Calibri; 
+	font-size: medium; 
+	color: #000000; 
+	background-color: #ffeb99; 
+	width: 150px;	
+	float: right;
+}
+
+#chat-footer{
+	border-bottom-left-radius: 7px; 
+	border-bottom-right-radius: 7px; 
+	width: 300px; 
+	height: 40px; 
+	position: absolute; 
+	bottom: 0px; 
+	background-color: #F3F8F9; 
+	font-family: Calibri;
+}
+
+#wrapper{
+	margin: 4px 20px 4px 20px; 
+	width: 260px;
+}
+
+#user-input{
+	width: 150px;
+	background-color: #F3F8F9;
+}

@@ -1,54 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page Title</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Page Title</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style/box.css">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
-<body style="overflow: hidden">
-    <form id="form1" style="overflow: hidden">
+<body>
+    <form id="chat-form">
         
-        <div style="border-style: solid; border-width: 3px; border-color: #3CB789 #3CB789 #E3F0EA #3CB789; border-top-left-radius: 7px; border-top-right-radius: 7px; background-color: #00D689; position: absolute; height: 60px; top: 0px; right: 0px; left: 0px; z-index: 2;">
-            <div style="position: absolute; margin: 15px; font-weight: bold; font-size: x-large; font-family: Calibri; width: 200px;"> Imię Chatbota</div>
-            </div>
+        <div id="chat-header">
+            <div id="chatbot-name" style="">Chelsea</div>
+		</div>
                
-            <div id="container"  style="background-color: #FFFFFF; position: absolute; width: 300px; height: 346px; bottom: 40px; right: 0px; left: 0px; overflow:auto; z-index: 1;">
+		<div id="chat-container">
+
+			<div class="chatbot-message">
+				I'm Chelsea, how can I help you?
+			</div>
+				
+			
+	
+		</div>
                     
-                <div style="border-radius: 7px; margin: 20px 20px 20px 40px; padding: 20px; font-family: Calibri; font-size: medium; color: #000000; background-color: #F2F6FA; width: 150px">
-                    <p>Tu będzie wyświetlane to, co ma do powiedzenia chatbot.</p>
-                </div>
-                    
-                <div style="margin: 10px; float: right; width: 150px; font-family: Calibri; color: #000000; font-size: small;">
-                        Tu będzie wyświetlane to, co napisze użytkownik
-                </div>
+		<div id="chat-footer">
+			<div id="wrapper">        
+				<input id="user-input" type="text" maxLength="260" />
+				<button id="send-button" type="button" class="btn btn-success">Wyślij</button>
+			</div>
+		</div>
         
-                            
-                <div style="border-radius: 7px; margin: 20px 20px 20px 40px; float: left; padding: 20px; font-family: Calibri; font-size: medium; color: #000000; background-color: #F2F6FA; width: 150px">
-                    Tu będzie wyświetlane to, co ma do powiedzenia chatbot. Tekst może być bardzo długi. Zobaczmy, jak to będzie wyglądać.
-                </div>
-        
-            </div>
-                    
-            <div style="border-bottom-left-radius: 7px; border-bottom-right-radius: 7px; width: 300px; height: 40px; position: absolute; bottom: 0px; background-color: #F3F8F9; font-family: Calibri;">
-                <div style="margin: 4px 20px 4px 20px; width: 260px;">        
-                    <input id="userInput" type="text" Font-Size="Medium" BorderStyle="None" BackColor="#F3F8F9" MaxLength="260" style="width: 150px;" />
-                    <button id="sendButton" type="button" class="btn btn-default">Wyślij</button>
-                </div>
-            </div>
-        
-        </form>
+	</form>
 
 </body>
 </html>
 
 <script>
 
-    $("#sendButton").click(function () {
-        var userInputText = $('#userInput').val();
-        $("#container").append('<div style="margin: 10px; float: right; width: 150px; font-family: Calibri; color: #000000; font-size: small;">' + userInputText + '</div>');
+    $("#send-button").click(function () {
+        var userInputText = $('#user-input').val();
+        $("#chat-container").append('<div class="user-message">' + userInputText + '</div>');
     });
 </script>
