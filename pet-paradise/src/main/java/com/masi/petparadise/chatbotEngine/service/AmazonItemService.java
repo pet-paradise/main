@@ -5,7 +5,6 @@ import am.ik.aws.apa.AwsApaRequesterImpl;
 import am.ik.aws.apa.jaxws.Item;
 import am.ik.aws.apa.jaxws.ItemSearchRequest;
 import am.ik.aws.apa.jaxws.ItemSearchResponse;
-import am.ik.aws.apa.jaxws.Items;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
