@@ -43,7 +43,7 @@
         var userInputText = $('#user-input').val();
         $("#chat-container").append('<div id="user-message" class="user-message">' + userInputText + '</div><div class="clear"></div>');
 
-		var url = 'http://localhost:8080/watson/message';
+		var url = 'http://localhost:8080/watson/message/' + userInputText;
 
 		$.ajax({
             method: "GET",
