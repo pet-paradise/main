@@ -46,22 +46,27 @@
         var userInputText = $('#user-input').val();
         $("#chat-container").append('<div id="user-message" class="user-message">' + userInputText + '</div>');
 
-		var url = 'http://localhost:8080/watson/message';
+		var url = 'http://localhost:8080/watson/message/' + userInputText;
 
 		$.ajax({
-            method: "GET",
-            url: url
+           method: "GET",
+           url: url,
+		   contentType: "text/plain;charset=UTF-8",
+           dataType: "text",
         }).done(function (data) {
-            $("#chat-container").append('<div id="chat-message" class="chatbot-message">' + data + '</div>');
+           $("#chat-container").append('<div id="chat-message" class="chatbot-message">' + data + '</div>');
         });
 
-		// $.ajax({
-        //     method: "POST",
-        //     url: "",
-        //     data: { message: userInputText }
-        // }).done(function (data) {
-        //     $("#container").append('<div style="border-radius: 7px; margin: 20px 20px 20px 40px; float: left; padding: 20px; font-family: Calibri; font-size: medium; color: #000000; background-color: #F2F6FA; width: 150px">'+ data + '</div>');
-        // });   
+		//  $.ajax({
+        //      method: "POST",
+        //      url: url,
+		// 	 headers: { "Content-Type": "application/json"},
+		// 	 dataType: 'json',
+  		// 	 contentType: 'application/json',
+        //      data: { message: userInputText }
+        //  }).done(function (data) {
+        //      $("#chat-container").append('<div id="chat-message" class="chatbot-message">' + data + '</div>');
+        //  });   
     });
 
 </script>
