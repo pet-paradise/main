@@ -12,31 +12,28 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
+<div id="chat-window">
     <form id="chat-form">
         
         <div id="chat-header">
-            <div id="chatbot-name" style="">Chelsea</div>
+            <div id="chatbot-name">Chelsea</div>
 		</div>
                
 		<div id="chat-container">
-
 			<div class="chatbot-message">
 				I'm Chelsea, how can I help you?
 			</div>
-				
-			
-	
+			<div class="clear"></div>
 		</div>
                     
 		<div id="chat-footer">
 			<div id="wrapper">        
-				<input id="user-input" type="text" maxLength="260" />
+				<input id="user-input" type="text" maxlength="260" />
 				<button id="send-button" type="button" class="btn btn-success">Wyślij</button>
 			</div>
 		</div>
-        
 	</form>
-
+</div>
 </body>
 </html>
 
@@ -44,7 +41,7 @@
 
     $("#send-button").click(function () {
         var userInputText = $('#user-input').val();
-        $("#chat-container").append('<div id="user-message" class="user-message">' + userInputText + '</div>');
+        $("#chat-container").append('<div id="user-message" class="user-message">' + userInputText + '</div><div class="clear"></div>');
 
 		var url = 'http://localhost:8080/watson/message';
 
@@ -52,7 +49,7 @@
             method: "GET",
             url: url
         }).done(function (data) {
-            $("#chat-container").append('<div id="chat-message" class="chatbot-message">' + data + '</div>');
+            $("#chat-container").append('<div class="row"><div id="chat-message" class="chatbot-message">' + data + '</div><div class="clear"></div>');
         });
 
 		// $.ajax({
@@ -60,7 +57,7 @@
         //     url: "",
         //     data: { message: userInputText }
         // }).done(function (data) {
-        //     $("#container").append('<div style="border-radius: 7px; margin: 20px 20px 20px 40px; float: left; padding: 20px; font-family: Calibri; font-size: medium; color: #000000; background-color: #F2F6FA; width: 150px">'+ data + '</div>');
+        //     $("#chat-container").append('<div class="row"><div class="user-message">'+ data + '</div><div class="clear"></div>');
         // });   
     });
 
