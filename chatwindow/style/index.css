@@ -1,0 +1,17 @@
+body{
+	background-color: #FFFFFF;
+	font-family: Calibri; 
+}
+
+#chat-window{
+	border-style: none;
+	background-color: #FFFFFF; 
+	position: fixed; 
+	right: 100px; 
+	bottom: 100px; 
+	height: 450px; 
+	width: 400px; 
+	color: #FFFFFF; 
+	overflow: hidden;
+	
+}
