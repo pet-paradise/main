@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+    <style>
+
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body.frame {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        div.main {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+
+        div.up {
+            border-style: solid;
+            border-width: 3px;
+            border-color: #3CB789 #3CB789 #E3F0EA #3CB789;
+            background-color: #00D689;
+            height: 60px;
+            z-index: 2;
+        }
+
+        div.name {
+            margin: 15px;
+            font-weight: bold;
+            font-size: x-large;
+            font-family: Calibri;
+            width: 200px;
+        }
+
+
+        div.middle {
+            background-color: #FFFFFF;
+            flex-grow: 1;
+            overflow: auto;
+            z-index: 1;
+        }
+
+        div.dymek1 {
+            border-radius: 7px;
+            margin: 20px 20px 20px 40px;
+            padding: 20px;
+            font-family: Calibri;
+            font-size: medium;
+            color: #000000;
+            background-color: #F2F6FA;
+            width: 150px;
+        }
+
+        div.dymek2 {
+            margin: 10px;
+            float: right;
+            width: 150px;
+            font-family: Calibri;
+            color: #000000;
+            font-size: small;
+        }
+
+        div.dymek3 {
+            border-radius: 7px;
+            margin: 20px 20px 20px 40px;
+            float: left;
+            padding: 20px;
+            font-family: Calibri;
+            font-size: medium;
+            color: #000000;
+            background-color: #F2F6FA;
+            width: 150px
+        }
+
+        div.down {
+            height: 60px;
+            background-color: #F3F8F9;
+            font-family: Calibri;
+        }
+
+        div.insert {
+            margin: 4px 20px 4px 20px;
+            width: 260px;
+        }
+    </style>
+</head>
+
+<body class="frame">
+    <div class="main">
+        <div class="up">
+            <div class="name">Chelsea</div>
+        </div>
+
+        <div class="middle">
+            <div class="dymek1">Tu bedzie wyswietlane to, co ma do powiedzenia chatbot.</div>
+            <div class="dymek2">Tu bedzie wyswietlane to, co napisze uzytkownik</div>
+            <div class="dymek3">Tu bedzie wyswietlane to, co ma do powiedzenia chatbot. Tekst moze byc bardzo dlugi. Zobaczmy, jak to bedzie wygladac.</div>
+        </div>
+
+        <div class="down">
+            <div class="insert">
+                <input style="border: none; background-color: #F3F8F9;"/>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
