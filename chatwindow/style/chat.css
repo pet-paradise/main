@@ -1,5 +1,10 @@
 @CHARSET "UTF-8";
 
+
+#panel{
+	border: solid 1px #dedfe0;
+}
+
 .chat, .conversation-list {
     list-style: none;
     margin: 0;
