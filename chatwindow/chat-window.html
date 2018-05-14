@@ -83,16 +83,15 @@
 			foo();
 		});
 		
-		//  $.ajax({
-        //      method: "POST",
-        //      url: url,
-		// 	 headers: { "Content-Type": "application/json"},
-		// 	 dataType: 'json',
-  		// 	 contentType: 'application/json',
-        //      data: { message: userInputText }
-        //  }).done(function (data) {
-        //      $("#chat-container").append('<div id="chat-message" class="chatbot-message">' + data + '</div>');
-        //  });
+		$.ajax({
+              method: "POST",
+              url: url,
+		 	 dataType: 'json',
+  		 	 contentType: 'application/json;charset=UTF8',
+              data: { message: userInputText }
+          }).done(function (data) {
+              $("#chat-container").append('<div id="chat-message" class="chatbot-message">' + data + '</div>');
+    	});
     });
 	</script>
 </body>
