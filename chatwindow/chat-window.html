@@ -14,7 +14,7 @@
 			</div>
 			<div id="panel-body" class="panel-body">
 				<ul id="messages" class="chat">
-					<li class="right clearfix">
+					<!--<li class="right clearfix">
 						<span class="chat-img pull-right">
 							<img src="images/user.png" class="img-circle img-responsive" alt="User"/>
 						</span>
@@ -27,7 +27,7 @@
 							   <span class="message-display">Wiadomość użytkownika</span> 
 							</p>
 						</div>
-					 </li>
+					 </li>-->
 					<li class="left clearfix">
 						<span class="chat-img pull-left">
 							<img src="images/robo.png" class="img-circle img-responsive" alt="User"/>
@@ -37,7 +37,7 @@
 								<b>Chelsea</b>
 							</div>
 							<p>
-							   <span class="message-display">Wiadomość Chelsea</span> 
+							   <span class="message-display">Hi! My name is Chelsea. What can I do for you?</span> 
 							</p>
 						</div>
 					 </li>
@@ -60,27 +60,29 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script>
-		$(function(){
+		function foo() {
 			$('#panel-body').scrollTop($('#panel-body')[0].scrollHeight - $('#panel-body')[0].clientHeight);
 
 			//alert($('#panel-body')[0].scrollHeight);
 			//alert($('#panel-body')[0].clientHeight);
-		});	
+		};
 		
 		$("#send-button").click(function () {
         var userInputText = $('#user-input').val();
 		console.log(userInputText);
         $("#messages").append('<li class="right clearfix"><span class="chat-img pull-right"><img src="images/user.png" class="img-circle img-responsive" alt="User"/></span><div class="chat-body clearfix"><div class="header"><b><span class="pull-right">You</span></b></div><div class="clear-both"></div><p><span class="message-display">' + userInputText + '</span> </p></div></li>');
 		$('#user-input').val('');
+		foo();
 		var url = 'http://localhost:8080/watson/message/' + userInputText;
 
 		$.ajax({
             method: "GET",
             url: url
         }).done(function (data) {
-            $("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/user.png" class="img-circle img-responsive" alt="User"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data + '</span> </p></div></li>');
-        });
-
+            $("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data + '</span> </p></div></li>');
+			foo();
+		});
+		
 		//  $.ajax({
         //      method: "POST",
         //      url: url,
