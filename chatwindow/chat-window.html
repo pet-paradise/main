@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<title>Chat window</title>
+	<meta charset="utf-8">
+    <link rel="stylesheet" href="style/chat.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>		
+	<div class="container-fluid">
+		<div class="panel">
+			<div class="panel-heading">
+				<span class="glyphicon glyphicon-comment"></span> Chatbot Chelsea</span>
+			</div>
+			<div id="panel-body" class="panel-body">
+				<ul id="messages" class="chat">
+					<li class="right clearfix">
+						<span class="chat-img pull-right">
+							<img src="images/user.png" class="img-circle img-responsive" alt="User"/>
+						</span>
+						<div class="chat-body clearfix">
+							<div class="header">
+								<b><span class="pull-right">You</span></b>
+							</div>
+							<div class="clear-both"></div>
+							<p>
+							   <span class="message-display">Wiadomość użytkownika</span> 
+							</p>
+						</div>
+					 </li>
+					<li class="left clearfix">
+						<span class="chat-img pull-left">
+							<img src="images/robo.png" class="img-circle img-responsive" alt="User"/>
+						</span>
+						<div class="chat-body clearfix">
+							<div class="header">
+								<b>Chelsea</b>
+							</div>
+							<p>
+							   <span class="message-display">Wiadomość Chelsea</span> 
+							</p>
+						</div>
+					 </li>
+				</ul>
+			</div>
+			<div class="panel-footer">
+				<div class="row">
+					<div id="input-wrapper" class="col-md-9">
+						<textarea id="user-input" class="form-control input-sm" placeholder="Tu możesz wpisać swoją wiadomość..." cols="80" rows="1"></textarea>
+					</div>
+					<div id="send-button-wrapper" class="col-md-3">
+						<span>
+							<button id="send-button" type="button" class="btn specialbutton">Wyślij</button>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script>
+		$(function(){
+			$('#panel-body').scrollTop($('#panel-body')[0].scrollHeight - $('#panel-body')[0].clientHeight);
+
+			//alert($('#panel-body')[0].scrollHeight);
+			//alert($('#panel-body')[0].clientHeight);
+		});	
+		
+		$("#send-button").click(function () {
+        var userInputText = $('#user-input').val();
+		console.log(userInputText);
+        $("#messages").append('<li class="right clearfix"><span class="chat-img pull-right"><img src="images/user.png" class="img-circle img-responsive" alt="User"/></span><div class="chat-body clearfix"><div class="header"><b><span class="pull-right">You</span></b></div><div class="clear-both"></div><p><span class="message-display">' + userInputText + '</span> </p></div></li>');
+		$('#user-input').val('');
+		var url = 'http://localhost:8080/watson/message/' + userInputText;
+
+		$.ajax({
+            method: "GET",
+            url: url
+        }).done(function (data) {
+            $("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/user.png" class="img-circle img-responsive" alt="User"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data + '</span> </p></div></li>');
+        });
+
+		//  $.ajax({
+        //      method: "POST",
+        //      url: url,
+		// 	 headers: { "Content-Type": "application/json"},
+		// 	 dataType: 'json',
+  		// 	 contentType: 'application/json',
+        //      data: { message: userInputText }
+        //  }).done(function (data) {
+        //      $("#chat-container").append('<div id="chat-message" class="chatbot-message">' + data + '</div>');
+        //  });
+    });
+	</script>
+</body>
+</html>

@@ -8,9 +8,9 @@ body{
 	background-color: #FFFFFF; 
 	position: fixed; 
 	right: 100px; 
-	bottom: 100px; 
-	height: 450px; 
-	width: 400px; 
+	bottom: 0px; 
+	height: 600px; 
+	width: 450px; 
 	color: #FFFFFF; 
 	overflow: hidden;
 	
