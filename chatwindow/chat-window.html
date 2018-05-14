@@ -8,7 +8,7 @@
 </head>
 <body>		
 	<div class="container-fluid">
-		<div class="panel">
+		<div id="panel" class="panel">
 			<div class="panel-heading">
 				<span class="glyphicon glyphicon-comment"></span> Chatbot Chelsea</span>
 			</div>
@@ -46,7 +46,7 @@
 			<div class="panel-footer">
 				<div class="row">
 					<div id="input-wrapper" class="col-md-9">
-						<textarea id="user-input" class="form-control input-sm" placeholder="Tu możesz wpisać swoją wiadomość..." cols="80" rows="1"></textarea>
+						<textarea id="user-input" class="form-control input-sm" placeholder="Tu możesz wpisać swoją wiadomość..." cols="80" rows="2"></textarea>
 					</div>
 					<div id="send-button-wrapper" class="col-md-3">
 						<span>
@@ -60,11 +60,9 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script>
+		//scroll chat window to the bottom
 		function foo() {
 			$('#panel-body').scrollTop($('#panel-body')[0].scrollHeight - $('#panel-body')[0].clientHeight);
-
-			//alert($('#panel-body')[0].scrollHeight);
-			//alert($('#panel-body')[0].clientHeight);
 		};
 		
 		$("#send-button").click(function () {
