@@ -71,26 +71,22 @@
         $("#messages").append('<li class="right clearfix"><span class="chat-img pull-right"><img src="images/user.png" class="img-circle img-responsive" alt="User"/></span><div class="chat-body clearfix"><div class="header"><b><span class="pull-right">You</span></b></div><div class="clear-both"></div><p><span class="message-display">' + userInputText + '</span> </p></div></li>');
 		$('#user-input').val('');
 		foo();
-		var url = 'http://localhost:8080/watson/message/' + userInputText;
+		
+		var message = { message: userInputText, conversationId: "test" }
+		var jsonMessage = JSON.stringify(message);
 
 		$.ajax({
-            method: "GET",
-            url: url
-        }).done(function (data) {
-            $("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data + '</span> </p></div></li>');
-			foo();
-		});
-		
-		/*$.ajax({
-              method: "POST",
-              url: url,
+             method: 'POST',
+             url: 'http://localhost:8080/watson/message',
 		 	 dataType: 'json',
   		 	 contentType: 'application/json;charset=UTF8',
-              data: { message: userInputText }
-          }).done(function (data) {
-              $("#chat-container").append('<div id="chat-message" class="chatbot-message">' + data + '</div>');
-    	});*/
-    });
+             data: jsonMessage,
+			 success: function (data) {
+				$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
+				foo();
+			 }
+          });
+    	});
 	</script>
 </body>
 </html>

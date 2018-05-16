@@ -1,5 +1,6 @@
 package com.masi.petparadise.watsonCommunication.controller;
 
+import com.masi.petparadise.watsonCommunication.controller.DTO.Conversation;
 import com.masi.petparadise.watsonCommunication.controller.DTO.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,18 +16,23 @@ public class WatsonCommunicationController {
 	@Autowired
 	WatsonCommunication watsonCommunication;
 	
-	@GetMapping("/message/{message}")
+	/*@GetMapping("/message/{message}")
 	public ResponseEntity<?> communicate(@PathVariable String message){
 		String responseMessage = watsonCommunication.communicate(message);
 		System.out.println(responseMessage);
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
-	}
+	}*/
 
-	/*@CrossOrigin(origins = "http://localhost:8080/watson")
 	@PostMapping("/message")
 	public ResponseEntity<?> communicate(@RequestBody Message message){
-		String responseMessage = watsonCommunication.communicate(message.getMessage());
-		System.out.println(responseMessage);
-		return new ResponseEntity<>(responseMessage, HttpStatus.OK);
-	}*/
+		Conversation conversation = new Conversation();
+		conversation.getMessages().add(message.getMessage());
+
+		//trzeba obsłużyć conversationId - nie może być ustawiane przy każdym requescie
+		conversation.setConversationId(message.getConversationId());
+
+		message.setMessage(watsonCommunication.communicate(message.getMessage()));
+		System.out.println(message);
+		return new ResponseEntity<>(message, HttpStatus.OK);
+	}
 }
