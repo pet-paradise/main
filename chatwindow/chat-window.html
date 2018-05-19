@@ -46,11 +46,11 @@
 			<div class="panel-footer">
 				<div class="row">
 					<div id="input-wrapper" class="col-md-9">
-						<textarea id="user-input" class="form-control input-sm" placeholder="Tu możesz wpisać swoją wiadomość..." cols="80" rows="2"></textarea>
+						<textarea id="user-input" class="form-control input-sm" placeholder="Tu możesz wpisać swoją wiadomość..." cols="80" rows="2" autofocus></textarea>
 					</div>
 					<div id="send-button-wrapper" class="col-md-3">
 						<span>
-							<button id="send-button" type="button" class="btn specialbutton">Wyślij</button>
+							<button id="send-button" type="button" class="btn specialbutton" onclick="document.getElementById('user-input').focus()">Wyślij</button>
 						</span>
 					</div>
 				</div>
@@ -86,7 +86,17 @@
 				foo();
 			 }
           });
-    	});
+        });
+
+        $(document).ready(function () {
+            $("#user-input").keydown(function () {
+                if (event.keyCode === 13) {
+                    $("button").trigger("click");
+                    $("#user-input").val(" ");
+                }
+
+            });
+        });
 	</script>
 </body>
 </html>
