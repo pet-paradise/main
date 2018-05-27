@@ -27,21 +27,22 @@ public class AmazonItemService {
     public List<PetSupplyItem> SearchItemByKeywords(String keywords) {
         setRequestParams(keywords);
         ItemSearchResponse response = requester.itemSearch(request);
-
+        String moreResultsURL = response.getItems().get(0).getMoreSearchResultsUrl();
         List<PetSupplyItem> items = new ArrayList<>();
         List<Item> itemsFromResponse = response.getItems().get(0).getItem();
         for(Item item : itemsFromResponse) {
-            items.add(createPetSupplyItem(item));
+            items.add(createPetSupplyItem(item, moreResultsURL));
         }
 
         return items;
     }
 
-    private PetSupplyItem createPetSupplyItem(Item item) {
+    private PetSupplyItem createPetSupplyItem(Item item, String moreResultsUrl) {
         PetSupplyItem petSupplyItem = new PetSupplyItem();
         petSupplyItem.setImage(item.getLargeImage());
         petSupplyItem.setItemAttributes(item.getItemAttributes());
         petSupplyItem.setDetailedPageURL(item.getDetailPageURL());
+        petSupplyItem.setMoreOffersURL(moreResultsUrl);
         return petSupplyItem;
     }
 

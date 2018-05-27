@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
     <link rel="stylesheet" href="style/chat.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="style/items.css">
 </head>
 <body>		
 	<div class="container-fluid">
@@ -72,7 +73,8 @@
 			$('#user-input').val('');
 			scrollDownChatWindow();
 			
-			var message = { message: userInputText, conversationId: localStorage.getItem("conversationId") }
+			// var message = { message: userInputText, conversationId: localStorage.getItem("conversationId") }
+			var message = { message: userInputText }
 			var jsonMessage = JSON.stringify(message);
 
 			$.ajax({
@@ -82,9 +84,17 @@
 				 contentType: 'application/json;charset=UTF8',
 				 data: jsonMessage,
 				 success: function (data) {
-					$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
-					scrollDownChatWindow();
-					localStorage.setItem("conversationId", data.conversationId);
+					if (data.supplyItems != null) {
+						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
+						$("#messages").append('<a href="'+ data.supplyItems[0].moreOffersURL +'">Your products</a>');
+						scrollDownChatWindow();
+					} else {
+						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
+						scrollDownChatWindow();
+					}
+					
+					
+					//localStorage.setItem("conversationId", data.conversationId);
 				 }
           });
     	});

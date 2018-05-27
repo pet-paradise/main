@@ -10,4 +10,5 @@ public class PetSupplyItem {
     Image image;
     ItemAttributes itemAttributes;
     String detailedPageURL;
+    String moreOffersURL;
 }
