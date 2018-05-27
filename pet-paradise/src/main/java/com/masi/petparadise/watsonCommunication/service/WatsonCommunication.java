@@ -1,25 +1,25 @@
 package com.masi.petparadise.watsonCommunication.service;
 
 
+import com.ibm.watson.developer_cloud.assistant.v1.model.*;
+import com.masi.petparadise.chatbotEngine.model.PetSupplyItem;
+import com.masi.petparadise.chatbotEngine.service.AmazonItemService;
+import com.masi.petparadise.watsonCommunication.controller.DTO.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ibm.watson.developer_cloud.assistant.v1.Assistant;
-import com.ibm.watson.developer_cloud.assistant.v1.model.Context;
-import com.ibm.watson.developer_cloud.assistant.v1.model.InputData;
-import com.ibm.watson.developer_cloud.assistant.v1.model.MessageOptions;
-import com.ibm.watson.developer_cloud.assistant.v1.model.MessageRequest;
-import com.ibm.watson.developer_cloud.assistant.v1.model.MessageResponse;
-import com.masi.petparadise.watsonCommunication.controller.DTO.Message;
+
+
+import java.util.List;
 
 @Service
 public class WatsonCommunication {
 	
 	private final String workspaceId = "a771707b-1ef5-4789-904d-48d15dd01745";
 	private Assistant service;
-	private MessageOptions options;
 	private Context context;
-	
+
 	@Autowired
 	public WatsonCommunication() {
 		this.service = new Assistant("2018-02-16");
@@ -27,25 +27,58 @@ public class WatsonCommunication {
 		this.context = new Context();
 	}
 	
-	public Message startConversation(Message message){
+	private MessageResponse startConversation(){
 		MessageOptions options = new MessageOptions.Builder(workspaceId).build();
 	    MessageResponse response = service.message(options).execute();
-	    this.context = response.getContext();
-	    Message responseMessage = new Message();
-	    responseMessage.setMessage(response.getOutput().getText().get(0));
-	    responseMessage.setConversationId(response.getContext().getConversationId());
-	    return responseMessage;
+
+	    return response;
 	}
 
-	public String communicate(String message, String conversationId){
-		
-		this.context.setConversationId(conversationId);
-		InputData input = new InputData.Builder(message).build();
-		options = new MessageOptions.Builder(workspaceId).input(input).context(context).build();
-		
-	    MessageResponse response = service.message(options).execute();
-	    System.out.println(response.getOutput().getText().get(0));
-	    return response.getOutput().getText().get(0);
+	public Message communicate(String message){
+		MessageResponse response;
+
+		if (context == null) {
+			response = startConversation();
+			this.context = response.getContext();
+		}
+		else {
+			InputData input = new InputData.Builder(message).build();
+			MessageOptions options = new MessageOptions.Builder(workspaceId).input(input).context(context).build();
+			response = service.message(options).execute();
+		}
+
+		Object isConversationFinished = response.getContext().get("isConversationFinished");
+
+		if (isConversationFinished != null) {
+			//return products
+			System.out.println(response.getOutput().getText().get(0));
+			this.context = null;
+			return prepareViewMessage(response.getOutput().getText().get(0), getProducts(prepareKeywords(response.getEntities())));
+		}
+		else {
+			System.out.println(response.getOutput().getText().get(0));
+			this.context = response.getContext();
+			return prepareViewMessage(response.getOutput().getText().get(0), null);
+		}
 	}
-	
+
+	private List<PetSupplyItem> getProducts(String keywords) {
+		AmazonItemService itemService = new AmazonItemService();
+		return itemService.SearchItemByKeywords(keywords);
+	}
+
+	private String prepareKeywords(List<RuntimeEntity> entities) {
+		String keywords = "";
+		for(RuntimeEntity entity : entities) {
+			keywords += entity.getValue() + " ";
+		}
+		return keywords;
+	}
+
+	private Message prepareViewMessage(String textMessage, List<PetSupplyItem> items) {
+		Message message = new Message();
+		message.setMessage(textMessage);
+		message.setSupplyItems(items);
+		return message;
+	}
 }

@@ -17,8 +17,8 @@ public class AmazonItemController {
 
     private final AmazonItemService amazonItemService;
 
-    @GetMapping("/category/{category}")
-    public ResponseEntity<?> GetItemsByCategory(@PathVariable String category) {
-        return new ResponseEntity<>(amazonItemService.SearchItemByCategory(category), HttpStatus.OK);
+    @GetMapping("/keywords/{keywords}")
+    public ResponseEntity<?> GetItemsByCategory(@PathVariable String keywords) {
+        return new ResponseEntity<>(amazonItemService.SearchItemByKeywords(keywords), HttpStatus.OK);
     }
 }

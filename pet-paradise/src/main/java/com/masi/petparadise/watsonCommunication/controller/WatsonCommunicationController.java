@@ -18,20 +18,15 @@ public class WatsonCommunicationController {
 
 	@PostMapping("/message")
 	public ResponseEntity<?> communicate(@RequestBody Message message){
-		Conversation conversation = new Conversation();
-		conversation.getMessages().add(message.getMessage());
-		conversation.setConversationId(message.getConversationId());
-		
-		
 		//sprawdzanie czy jest ustawiony conversationId, tak => poczatek rozmowy, nie => kontynuacja
-		Message responseMessage = new Message();
+		/*Message responseMessage = new Message();
 		if (message.getConversationId() == "null" || message.getConversationId() == null){
 			System.out.println("--------Początek rozmowy---------");
 			responseMessage = watsonCommunication.startConversation(message);
 		} else{
 			responseMessage.setConversationId(message.getConversationId());
 			responseMessage.setMessage(watsonCommunication.communicate(message.getMessage(), message.getConversationId()));
-		}
-		return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+		}*/
+		return new ResponseEntity<>(watsonCommunication.communicate(message.getMessage()), HttpStatus.OK);
 	}
 }
