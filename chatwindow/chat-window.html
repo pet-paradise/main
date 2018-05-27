@@ -74,7 +74,8 @@
 			scrollDownChatWindow();
 			
 			// var message = { message: userInputText, conversationId: localStorage.getItem("conversationId") }
-			var message = { message: userInputText }
+			//var message = { message: userInputText }
+			var message = { message: userInputText, context: localStorage.getItem("context") }
 			var jsonMessage = JSON.stringify(message);
 
 			$.ajax({
@@ -86,15 +87,13 @@
 				 success: function (data) {
 					if (data.supplyItems != null) {
 						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
-						$("#messages").append('<a target="_blank" href="'+ data.supplyItems[0].moreOffersURL +'">Your products</a>');
-						scrollDownChatWindow();
+						$("#messages").append('<a target="_blank" href="'+ data.supplyItems[0].moreOffersURL +'">View products list adjusted to your needs</a>');
+						localStorage.removeItem("context");
 					} else {
 						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
-						scrollDownChatWindow();
 					}
-					
-					
-					//localStorage.setItem("conversationId", data.conversationId);
+					scrollDownChatWindow();
+					localStorage.setItem("context", data.context);
 				 }
           });
     	});
