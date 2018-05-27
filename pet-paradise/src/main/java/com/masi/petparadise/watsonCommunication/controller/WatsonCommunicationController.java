@@ -15,24 +15,23 @@ public class WatsonCommunicationController {
 
 	@Autowired
 	WatsonCommunication watsonCommunication;
-	
-	/*@GetMapping("/message/{message}")
-	public ResponseEntity<?> communicate(@PathVariable String message){
-		String responseMessage = watsonCommunication.communicate(message);
-		System.out.println(responseMessage);
-        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
-	}*/
 
 	@PostMapping("/message")
 	public ResponseEntity<?> communicate(@RequestBody Message message){
 		Conversation conversation = new Conversation();
 		conversation.getMessages().add(message.getMessage());
-
-		//trzeba obsłużyć conversationId - nie może być ustawiane przy każdym requescie
 		conversation.setConversationId(message.getConversationId());
-
-		message.setMessage(watsonCommunication.communicate(message.getMessage()));
-		System.out.println(message);
-		return new ResponseEntity<>(message, HttpStatus.OK);
+		
+		
+		//sprawdzanie czy jest ustawiony conversationId, tak => poczatek rozmowy, nie => kontynuacja
+		Message responseMessage = new Message();
+		if (message.getConversationId() == "null" || message.getConversationId() == null){
+			System.out.println("--------Początek rozmowy---------");
+			responseMessage = watsonCommunication.startConversation(message);
+		} else{
+			responseMessage.setConversationId(message.getConversationId());
+			responseMessage.setMessage(watsonCommunication.communicate(message.getMessage(), message.getConversationId()));
+		}
+		return new ResponseEntity<>(responseMessage, HttpStatus.OK);
 	}
 }

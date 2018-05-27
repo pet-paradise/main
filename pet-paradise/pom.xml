@@ -49,16 +49,23 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- <dependency>
+		<dependency>
 		  <groupId>com.ibm.watson.developer_cloud</groupId>
 		  <artifactId>java-sdk</artifactId>
 		  <version>5.1.1</version>
-		</dependency> -->
-		<dependency>
+		</dependency> 
+		<!-- <dependency>
 		    <groupId>com.ibm.watson.developer_cloud</groupId>
 		    <artifactId>conversation</artifactId>
 		    <version>3.8.0</version>
-		</dependency>
+		</dependency> -->
+		
+		<!-- <dependency>
+		    <groupId>com.ibm.watson.developer_cloud</groupId>
+		    <artifactId>assistant</artifactId>
+		    <version>5.1.0</version>
+		</dependency> -->
+		
 
 		<dependency>
 			<groupId>am.ik.aws</groupId>

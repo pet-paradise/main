@@ -66,25 +66,26 @@
 		};
 		
 		$("#send-button").click(function () {
-        var userInputText = $('#user-input').val();
-		console.log(userInputText);
-        $("#messages").append('<li class="right clearfix"><span class="chat-img pull-right"><img src="images/user.png" class="img-circle img-responsive" alt="User"/></span><div class="chat-body clearfix"><div class="header"><b><span class="pull-right">You</span></b></div><div class="clear-both"></div><p><span class="message-display">' + userInputText + '</span> </p></div></li>');
-		$('#user-input').val('');
-		scrollDownChatWindow();
-		
-		var message = { message: userInputText, conversationId: "test" }
-		var jsonMessage = JSON.stringify(message);
+			var userInputText = $('#user-input').val();
+			console.log(userInputText);
+			$("#messages").append('<li class="right clearfix"><span class="chat-img pull-right"><img src="images/user.png" class="img-circle img-responsive" alt="User"/></span><div class="chat-body clearfix"><div class="header"><b><span class="pull-right">You</span></b></div><div class="clear-both"></div><p><span class="message-display">' + userInputText + '</span> </p></div></li>');
+			$('#user-input').val('');
+			scrollDownChatWindow();
+			
+			var message = { message: userInputText, conversationId: localStorage.getItem("conversationId") }
+			var jsonMessage = JSON.stringify(message);
 
-		$.ajax({
-             method: 'POST',
-             url: 'http://localhost:8080/watson/message',
-		 	 dataType: 'json',
-  		 	 contentType: 'application/json;charset=UTF8',
-             data: jsonMessage,
-			 success: function (data) {
-				$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
-				scrollDownChatWindow();
-			 }
+			$.ajax({
+				 method: 'POST',
+				 url: 'http://localhost:8080/watson/message',
+				 dataType: 'json',
+				 contentType: 'application/json;charset=UTF8',
+				 data: jsonMessage,
+				 success: function (data) {
+					$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
+					scrollDownChatWindow();
+					localStorage.setItem("conversationId", data.conversationId);
+				 }
           });
     	});
 		
