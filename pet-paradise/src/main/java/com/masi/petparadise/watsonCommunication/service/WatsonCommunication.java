@@ -18,13 +18,11 @@ public class WatsonCommunication {
 	
 	private final String workspaceId = "a771707b-1ef5-4789-904d-48d15dd01745";
 	private Assistant service;
-	private Context context;
 
 	@Autowired
 	public WatsonCommunication() {
 		this.service = new Assistant("2018-02-16");
 		this.service.setUsernameAndPassword("02bd8aee-854a-44e0-a80d-5cb030ed5302", "17hDwxvu46Xs");
-		this.context = new Context();
 	}
 	
 	private MessageResponse startConversation(){
@@ -34,15 +32,15 @@ public class WatsonCommunication {
 	    return response;
 	}
 
-	public Message communicate(String message){
+	public Message communicate(Message message){
+		Context context = message.getContext();
 		MessageResponse response;
 
 		if (context == null) {
 			response = startConversation();
-			this.context = response.getContext();
 		}
 		else {
-			InputData input = new InputData.Builder(message).build();
+			InputData input = new InputData.Builder(message.getMessage()).build();
 			MessageOptions options = new MessageOptions.Builder(workspaceId).input(input).context(context).build();
 			response = service.message(options).execute();
 		}
@@ -52,13 +50,12 @@ public class WatsonCommunication {
 		if (isConversationFinished != null) {
 			//return products
 			System.out.println(response.getOutput().getText().get(0));
-			this.context = null;
-			return prepareViewMessage(response.getOutput().getText().get(0), getProducts(prepareKeywords(response.getEntities())));
+			return prepareViewMessage(response.getOutput().getText().get(0), getProducts(prepareKeywords(response.getEntities())), context);
 		}
 		else {
 			System.out.println(response.getOutput().getText().get(0));
-			this.context = response.getContext();
-			return prepareViewMessage(response.getOutput().getText().get(0), null);
+			context = response.getContext();
+			return prepareViewMessage(response.getOutput().getText().get(0), null, context);
 		}
 	}
 
@@ -75,10 +72,11 @@ public class WatsonCommunication {
 		return keywords;
 	}
 
-	private Message prepareViewMessage(String textMessage, List<PetSupplyItem> items) {
+	private Message prepareViewMessage(String textMessage, List<PetSupplyItem> items, Context context) {
 		Message message = new Message();
 		message.setMessage(textMessage);
 		message.setSupplyItems(items);
+		message.setContext(context);
 		return message;
 	}
 }
