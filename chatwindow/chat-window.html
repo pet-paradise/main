@@ -101,10 +101,9 @@
 		
 		
 		$(document).ready(function () {
-            $("#user-input").keydown(function () {
+            $("#user-input").keyup(function () {
                 if (event.keyCode === 13) {
                     $("button").trigger("click");
-                    //$('#user-input').val('');
                 }
             });
         });
