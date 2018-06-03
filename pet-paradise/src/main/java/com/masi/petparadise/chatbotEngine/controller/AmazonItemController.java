@@ -26,7 +26,7 @@ public class AmazonItemController {
         return new ResponseEntity<>(amazonItemService.SearchItemByKeywords(keywords), HttpStatus.OK);
     }
 
-    @GetMapping("")
+    /*@GetMapping("")
     public ResponseEntity<?> GetAllConversations() {
 
         conversationRepository.deleteAll();
@@ -43,5 +43,5 @@ public class AmazonItemController {
         conversationRepository.save(conversation2);
 
         return new ResponseEntity<>(conversationRepository.findAll(), HttpStatus.OK);
-    }
+    }*/
 }

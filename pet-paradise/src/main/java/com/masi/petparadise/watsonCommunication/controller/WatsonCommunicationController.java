@@ -27,6 +27,6 @@ public class WatsonCommunicationController {
 			responseMessage.setConversationId(message.getConversationId());
 			responseMessage.setMessage(watsonCommunication.communicate(message.getMessage(), message.getConversationId()));
 		}*/
-		return new ResponseEntity<>(watsonCommunication.communicate(message), HttpStatus.OK);
+		return new ResponseEntity<>(watsonCommunication.communicateV2(message), HttpStatus.OK);
 	}
 }

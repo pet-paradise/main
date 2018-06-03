@@ -10,6 +10,8 @@ import java.util.List;
 @Data
 public class Message {
 
+    private String conversationId;
+
     private String message;
 
     private Context context;

@@ -75,8 +75,8 @@
 			
 			// var message = { message: userInputText, conversationId: localStorage.getItem("conversationId") }
 			//var message = { message: userInputText }
-			var retrievedObject = JSON.parse(localStorage.getItem('context'));
-			var message = { message: userInputText, context: retrievedObject }
+			//var retrievedObject = JSON.parse(localStorage.getItem('context'));
+			var message = { message: userInputText, conversationId: localStorage.getItem("conversationId") }
 			var jsonMessage = JSON.stringify(message);
 
 			$.ajax({
@@ -89,10 +89,10 @@
 					if (data.supplyItems != null) {
 						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
 						$("#messages").append('<a target="_blank" href="'+ data.supplyItems[0].moreOffersURL +'">View products list adjusted to your needs</a>');
-						localStorage.removeItem("context");
+						localStorage.removeItem("conversationId");
 					} else {
 						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
-						localStorage.setItem("context", JSON.stringify(data.context));
+						localStorage.setItem("conversationId", data.conversationId);
 					}
 					scrollDownChatWindow();
 				 }
