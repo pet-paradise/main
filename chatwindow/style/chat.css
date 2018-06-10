@@ -86,7 +86,7 @@
 	white-space: pre-wrap;
 }
 
-.panel-heading, .panel-footer{
+.panel-heading{
 	background-color: #66b9bf;
 	color: #ffffff;
 }
@@ -107,4 +107,8 @@
 }
 button.refresh{
 	float:right;
+}
+
+.modal {
+	color: black !important;
 }

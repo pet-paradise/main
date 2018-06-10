@@ -7,6 +7,8 @@ import com.masi.petparadise.chatbotEngine.model.PetSupplyItem;
 import com.masi.petparadise.chatbotEngine.service.AmazonItemService;
 import com.masi.petparadise.chatbotEngine.service.ConversationService;
 import com.masi.petparadise.watsonCommunication.controller.DTO.Message;
+import com.masi.petparadise.watsonCommunication.controller.DTO.Rating;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -130,5 +132,10 @@ public class WatsonCommunication {
 			conversation.setEntities(conversationService.addEntity(conversation, entity.getValue()));
 		}
 		return conversation;
+	}
+
+	public void saveRating(Rating rating) {
+		Conversation conversation = conversationService.findByConversationId(rating.getConversationId());
+		conversationService.updateConversationWithRating(rating, conversation);
 	}
 }

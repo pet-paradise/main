@@ -20,6 +20,9 @@ public class Conversation {
     private List<String> entities;
 
     private boolean isConversationFinished;
+    
+    private int cus;
+	private int ces;
 
     public Conversation() {
         messages = new ArrayList<>();

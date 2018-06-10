@@ -1,7 +1,8 @@
 package com.masi.petparadise.watsonCommunication.controller;
 
-import com.masi.petparadise.watsonCommunication.controller.DTO.Conversation;
 import com.masi.petparadise.watsonCommunication.controller.DTO.Message;
+import com.masi.petparadise.watsonCommunication.controller.DTO.Rating;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +29,13 @@ public class WatsonCommunicationController {
 			responseMessage.setMessage(watsonCommunication.communicate(message.getMessage(), message.getConversationId()));
 		}*/
 		return new ResponseEntity<>(watsonCommunication.communicateV2(message), HttpStatus.OK);
+	}
+	
+	@PostMapping("/rate")
+	public ResponseEntity<?> rate(@RequestBody Rating rating){
+		watsonCommunication.saveRating(rating);
+		//System.out.println(rating.getConversationId() + " ---- " + rating.getCes() + "   " + rating.getCus());
+		return null;
+		
 	}
 }
