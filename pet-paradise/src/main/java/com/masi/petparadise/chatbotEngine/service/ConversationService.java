@@ -35,7 +35,9 @@ public class ConversationService {
 
     public List<String> addMessage(Conversation conversation, String message) {
         List<String> messages = conversation.getMessages();
-        messages.add(message);
+        if (messages.contains(message) == false) {
+            messages.add(message);
+        }
         return messages;
     }
 
