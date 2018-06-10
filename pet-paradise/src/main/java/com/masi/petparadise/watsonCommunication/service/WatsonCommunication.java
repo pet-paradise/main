@@ -156,9 +156,9 @@ public class WatsonCommunication {
 		return conversation;
 	}
 
-	public void saveRating(Rating rating) {
+	public Conversation saveRating(Rating rating) {
 		Conversation conversation = conversationService.findByConversationId(rating.getConversationId());
-		conversationService.updateConversationWithRating(rating, conversation);
+		return conversationService.updateConversationWithRating(rating, conversation);
 	}
 	
 	private double setQEI(double numberOfProductsBeforeQuestion, double numberOfProductsAfterQuestion) {
