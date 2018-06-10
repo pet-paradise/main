@@ -5,10 +5,12 @@ import am.ik.aws.apa.AwsApaRequesterImpl;
 import am.ik.aws.apa.jaxws.Item;
 import am.ik.aws.apa.jaxws.ItemSearchRequest;
 import am.ik.aws.apa.jaxws.ItemSearchResponse;
+import am.ik.aws.apa.jaxws.Items;
 import com.masi.petparadise.chatbotEngine.model.PetSupplyItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,13 @@ public class AmazonItemService {
         request.setKeywords(keywords);
         request.getResponseGroup().add("Images");
         request.getResponseGroup().add("ItemAttributes");
+    }
+
+    public int numberOfProducts(String keywords) {
+        setRequestParams(keywords);
+        ItemSearchResponse response = requester.itemSearch(request);
+        Items items = response.getItems().get(0);
+        return items.getTotalResults().intValue();
     }
 
 }

@@ -16,6 +16,7 @@ import com.ibm.watson.developer_cloud.assistant.v1.Assistant;
 
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WatsonCommunication {
@@ -92,6 +93,7 @@ public class WatsonCommunication {
 		Conversation conversation = conversationService.findByConversationId(message.getConversationId());
 		if (conversation == null || conversation.isConversationFinished() == true) {
 			conversation = new Conversation();
+			conversation.setPreviousNumberOfProducts(0);
 			conversation.setMessages(conversationService.addMessage(conversation, message.getMessage()));
 			response = startConversation();
 		}
@@ -103,11 +105,31 @@ public class WatsonCommunication {
 			MessageOptions options = new MessageOptions.Builder(workspaceId).input(input).context(conversation.getContext()).build();
 			response = service.message(options).execute();
 		}
+
+		Object isUserInputUnderstood = response.getContext().get("isUserInputUnderstood");
+
+		if (isUserInputUnderstood != null) {
+			conversation.setCFI(conversation.getCFI() + 1);
+		}
 		//update conversation from db
 		updateConversation(conversation, response.getContext().getConversationId(), response.getOutput().getText().get(0),
 							response.getEntities(), response.getContext());
 
+		if (conversation.getPreviousNumberOfProducts() != 0) {
+			AmazonItemService service = new AmazonItemService();
+			Map<String, Double> map =  conversation.getQEI();
+			double numberOfProductsAfterQuestion = service.numberOfProducts(prepareKeywords(conversation.getEntities()));
+			map.put(message.getMessage(), setQEI(conversation.getPreviousNumberOfProducts(), numberOfProductsAfterQuestion));
+			conversation.setQEI(map);
+			conversation.setPreviousNumberOfProducts(numberOfProductsAfterQuestion);
+		}
+		else {
+			AmazonItemService service = new AmazonItemService();
+			conversation.setPreviousNumberOfProducts(service.numberOfProducts(prepareKeywords(conversation.getEntities())));
+		}
+
 		Object isConversationFinished = response.getContext().get("isConversationFinished");
+
 
 		if (isConversationFinished != null) {
 			//return products
@@ -137,5 +159,11 @@ public class WatsonCommunication {
 	public void saveRating(Rating rating) {
 		Conversation conversation = conversationService.findByConversationId(rating.getConversationId());
 		conversationService.updateConversationWithRating(rating, conversation);
+	}
+	
+	private double setQEI(double numberOfProductsBeforeQuestion, double numberOfProductsAfterQuestion) {
+		double numerator = numberOfProductsBeforeQuestion - numberOfProductsAfterQuestion;
+		double result = numerator / numberOfProductsBeforeQuestion;
+		return result * 100;
 	}
 }
