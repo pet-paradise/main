@@ -35,15 +35,13 @@ public class ConversationService {
 
     public List<String> addMessage(Conversation conversation, String message) {
         List<String> messages = conversation.getMessages();
-        if (messages.contains(message) == false) {
-            messages.add(message);
-        }
         return messages;
     }
 
     public List<String> addEntity(Conversation conversation, String entity) {
         List<String> entities = conversation.getEntities();
-        entities.add(entity);
+        if (entities.contains(entity) == false)
+            entities.add(entity);
         return entities;
     }
 
