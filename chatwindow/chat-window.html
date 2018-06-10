@@ -18,7 +18,7 @@
 			</div>
 			<div id="panel-body" class="panel-body">
 				<ul id="messages" class="chat">
-					<li class="left clearfix">
+<!-- 					<li class="left clearfix">
 						<span class="chat-img pull-left">
 							<img src="images/robo.png" class="img-circle img-responsive" alt="User"/>
 						</span>
@@ -30,7 +30,7 @@
 							   <span class="message-display">Hi! My name is Chelsea. What can I do for you?</span> 
 							</p>
 						</div>
-					 </li>
+					 </li> -->
 				</ul>
 			</div>
 			<div class="panel-footer">
@@ -57,12 +57,12 @@
 			while (conversation.firstChild) {
 			    conversation.removeChild(conversation.firstChild);
 			}
-			$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display"></span>Hi! My name is Chelsea. What else can I do for you?</p></div></li>');
+			sendWelcomeMessage();
 		}
 	</script>
 	<script>
 		
-		
+		$(document).ready(function() { sendWelcomeMessage(); });
 		//scroll chat window to the bottom
 		function scrollDownChatWindow() {
 			$('#panel-body').scrollTop($('#panel-body')[0].scrollHeight - $('#panel-body')[0].clientHeight);
@@ -107,8 +107,31 @@
             });
         });
 		
+		function sendWelcomeMessage() {
+			var message = { message: '', conversationId: localStorage.getItem("conversationId") }
+			var jsonMessage = JSON.stringify(message);
+			$.ajax({
+				 method: 'POST',
+				 url: 'http://localhost:8080/watson/message',
+				 dataType: 'json',
+				 contentType: 'application/json;charset=UTF8',
+				 data: jsonMessage,
+				 success: function (data) {
+					if (data.supplyItems != null) {
+						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
+						$("#messages").append('<a target="_blank" href="'+ data.supplyItems[0].moreOffersURL +'">View products list adjusted to your needs</a>');
+						localStorage.removeItem("conversationId");
+					} else {
+						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
+						localStorage.setItem("conversationId", data.conversationId);
+					}
+					scrollDownChatWindow();
+				 }
+          });
+		}
 
 	</script>
+
 	
 </body>
 </html>
