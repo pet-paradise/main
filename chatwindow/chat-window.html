@@ -75,19 +75,6 @@
 			</div>
 			<div id="panel-body" class="panel-body">
 				<ul id="messages" class="chat">
-<!-- 					<li class="left clearfix">
-						<span class="chat-img pull-left">
-							<img src="images/robo.png" class="img-circle img-responsive" alt="User"/>
-						</span>
-						<div class="chat-body clearfix">
-							<div class="header">
-								<b>Chelsea</b>
-							</div>
-							<p>
-							   <span class="message-display">Hi! My name is Chelsea. What can I do for you?</span> 
-							</p>
-						</div>
-					 </li> -->
 				</ul>
 			</div>
 			<div class="panel-footer">
@@ -107,18 +94,9 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <script>
-		function resetConversation() {
-			localStorage.removeItem("conversationId");
-			var conversation = document.getElementById("messages");
-			while (conversation.firstChild) {
-			    conversation.removeChild(conversation.firstChild);
-			}
-			sendWelcomeMessage();
-		}
-	</script>
 	<script>
-		
+		var conversationFinished = false;
+
 		$(document).ready(function() { sendWelcomeMessage(); });
 		//scroll chat window to the bottom
 		function scrollDownChatWindow() {
@@ -143,9 +121,11 @@
 				 data: jsonMessage,
 				 success: function (data) {
 					if (data.supplyItems != null) {
-						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
+						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + 'Now rate my service, please!' + '</span> </p></div></li>');
 						$("#messages").append('<a target="_blank" href="'+ data.supplyItems[0].moreOffersURL +'">View products list adjusted to your needs</a>');
 						//localStorage.removeItem("conversationId");
+						conversationFinished = true;
+						$('#rating').modal('show');
 					} else {
 						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
 						localStorage.setItem("conversationId", data.conversationId);
@@ -174,33 +154,48 @@
 				 contentType: 'application/json;charset=UTF8',
 				 data: jsonMessage,
 				 success: function (data) {
-					if (data.supplyItems != null) {
-						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
-						$("#messages").append('<a target="_blank" href="'+ data.supplyItems[0].moreOffersURL +'">View products list adjusted to your needs</a>');
-						localStorage.removeItem("conversationId");
-					} else {
-						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
-						localStorage.setItem("conversationId", data.conversationId);
-					}
+					$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
+					localStorage.setItem("conversationId", data.conversationId);
 				 }
           });
 		}
 
 		function sendRating() {
-			var usability = $('input[name="rate1"]:checked').val();
-			var effectiveness = $('input[name="rate2"]:checked').val();
-			var rating = { cus: usability, ces: effectiveness, conversationId: localStorage.getItem("conversationId") }
-			var jsonMessage = JSON.stringify(rating);
-			$.ajax({
-				 method: 'POST',
-				 url: 'http://localhost:8080/watson/rate',
-				 dataType: 'json',
-				 contentType: 'application/json;charset=UTF8',
-				 data: jsonMessage,
-				 success: function (data) {
+			if (conversationFinished == true){
+				var usability = $('input[name="rate1"]:checked').val();
+				var effectiveness = $('input[name="rate2"]:checked').val();
+				var rating = { cus: usability, ces: effectiveness, conversationId: localStorage.getItem("conversationId") }
+				var jsonMessage = JSON.stringify(rating);
+				$.ajax({
+					 method: 'POST',
+					 url: 'http://localhost:8080/watson/rate',
+					 dataType: 'json',
+					 contentType: 'application/json;charset=UTF8',
+					 data: jsonMessage,
+					 success: function (data) {
+					 	$("#messages").append('CHATBOT METRICS<br/>'
+					 		+ 'Average conversation length (ACL): ' + data.acl
+					 		+ 'Questions’ efficiency index (QEI): ' + data.qei
+					 		+ 'Chatbot’s failure index (CFI): ' + data.cfi
+					 		+ 'Chatbot’s usability score (CUS): ' + data.cus
+					 		+ 'Chatbot’s effectiveness score (CES): ' + data.ces);
+					 }
+	          	});
+			} else {
+				alert('Aby ocenić należy najpierw zakończyć rozmowę');
+				$('#rating').modal('hide');
+			}
+			
+		}
 
-				 }
-          });
+		function resetConversation() {
+			localStorage.removeItem("conversationId");
+			var conversation = document.getElementById("messages");
+			while (conversation.firstChild) {
+			    conversation.removeChild(conversation.firstChild);
+			}
+			conversationFinished = false;
+			sendWelcomeMessage();
 		}
 
 	</script>
