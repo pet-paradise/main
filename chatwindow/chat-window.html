@@ -18,7 +18,7 @@
 			</div>
 			<div id="panel-body" class="panel-body">
 				<ul id="messages" class="chat">
-					<li class="left clearfix">
+<!-- 					<li class="left clearfix">
 						<span class="chat-img pull-left">
 							<img src="images/robo.png" class="img-circle img-responsive" alt="User"/>
 						</span>
@@ -30,13 +30,13 @@
 							   <span class="message-display">Hi! My name is Chelsea. What can I do for you?</span> 
 							</p>
 						</div>
-					 </li>
+					 </li> -->
 				</ul>
 			</div>
 			<div class="panel-footer">
 				<div class="row">
 					<div id="input-wrapper" class="col-md-9">
-						<textarea id="user-input" class="form-control input-sm" placeholder="Tu wpisz swoją wiadomość..." cols="80" rows="1" autofocus></textarea>
+						<input id="user-input" class="form-control input-sm" placeholder="Tu wpisz swoją wiadomość..." autofocus />
 					</div>
 					<div id="send-button-wrapper" class="col-md-3">
 						<span>
@@ -49,9 +49,20 @@
 	</div>	
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+		function resetConversation() {
+			localStorage.removeItem("conversationId");
+			var conversation = document.getElementById("messages");
+			while (conversation.firstChild) {
+			    conversation.removeChild(conversation.firstChild);
+			}
+			sendWelcomeMessage();
+		}
+	</script>
 	<script>
 		
-		
+		$(document).ready(function() { sendWelcomeMessage(); });
 		//scroll chat window to the bottom
 		function scrollDownChatWindow() {
 			$('#panel-body').scrollTop($('#panel-body')[0].scrollHeight - $('#panel-body')[0].clientHeight);
@@ -64,9 +75,6 @@
 			$('#user-input').val('');
 			scrollDownChatWindow();
 			
-			// var message = { message: userInputText, conversationId: localStorage.getItem("conversationId") }
-			//var message = { message: userInputText }
-			//var retrievedObject = JSON.parse(localStorage.getItem('context'));
 			var message = { message: userInputText, conversationId: localStorage.getItem("conversationId") }
 			var jsonMessage = JSON.stringify(message);
 
@@ -94,22 +102,36 @@
 		$(document).ready(function () {
             $("#user-input").keydown(function () {
                 if (event.keyCode === 13) {
-                    $("button").trigger("click");
+                    $('#send-button').trigger("click");
                 }
             });
         });
 		
+		function sendWelcomeMessage() {
+			var message = { message: '', conversationId: localStorage.getItem("conversationId") }
+			var jsonMessage = JSON.stringify(message);
+			$.ajax({
+				 method: 'POST',
+				 url: 'http://localhost:8080/watson/message',
+				 dataType: 'json',
+				 contentType: 'application/json;charset=UTF8',
+				 data: jsonMessage,
+				 success: function (data) {
+					if (data.supplyItems != null) {
+						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
+						$("#messages").append('<a target="_blank" href="'+ data.supplyItems[0].moreOffersURL +'">View products list adjusted to your needs</a>');
+						localStorage.removeItem("conversationId");
+					} else {
+						$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display">' + data.message + '</span> </p></div></li>');
+						localStorage.setItem("conversationId", data.conversationId);
+					}
+					scrollDownChatWindow();
+				 }
+          });
+		}
 
 	</script>
-	<script>
-		function resetConversation() {
-			localStorage.removeItem("conversationId");
-			var conversation = document.getElementById("messages");
-			while (conversation.firstChild) {
-			    conversation.removeChild(conversation.firstChild);
-			}
-			$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display"></span>Hi! My name is Chelsea. What else can I do for you?</p></div></li>');
-		}
-	</script>
+
+	
 </body>
 </html>
