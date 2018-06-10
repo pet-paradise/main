@@ -61,6 +61,10 @@
     height: 480px;
 }
 
+.panel-heading {
+	height: 50px;
+}
+
 #send-button-wrapper{
 	float: right;
 }
@@ -100,4 +104,7 @@
 ::-webkit-scrollbar-thumb
 {
   background: #66b9bf;
+}
+button.refresh{
+	float:right;
 }

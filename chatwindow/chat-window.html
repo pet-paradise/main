@@ -11,24 +11,13 @@
 	<div class="container-fluid">
 		<div id="panel" class="panel">
 			<div class="panel-heading">
-				<span class="glyphicon glyphicon-comment"></span> Chatbot Chelsea</span>
+					<span class="glyphicon glyphicon-comment"></span> Chatbot Chelsea
+					<button type="button" class="refresh btn btn-primary" onclick="resetConversation()">
+						<span class="glyphicon glyphicon-refresh"></span>
+					</button>
 			</div>
 			<div id="panel-body" class="panel-body">
 				<ul id="messages" class="chat">
-					<!--<li class="right clearfix">
-						<span class="chat-img pull-right">
-							<img src="images/user.png" class="img-circle img-responsive" alt="User"/>
-						</span>
-						<div class="chat-body clearfix">
-							<div class="header">
-								<b><span class="pull-right">You</span></b>
-							</div>
-							<div class="clear-both"></div>
-							<p>
-							   <span class="message-display">Wiadomość użytkownika</span> 
-							</p>
-						</div>
-					 </li>-->
 					<li class="left clearfix">
 						<span class="chat-img pull-left">
 							<img src="images/robo.png" class="img-circle img-responsive" alt="User"/>
@@ -47,11 +36,11 @@
 			<div class="panel-footer">
 				<div class="row">
 					<div id="input-wrapper" class="col-md-9">
-						<textarea id="user-input" class="form-control input-sm" placeholder="Tu możesz wpisać swoją wiadomość..." cols="80" rows="1" autofocus></textarea>
+						<textarea id="user-input" class="form-control input-sm" placeholder="Tu wpisz swoją wiadomość..." cols="80" rows="1" autofocus></textarea>
 					</div>
 					<div id="send-button-wrapper" class="col-md-3">
 						<span>
-							<button id="send-button" type="button" class="btn specialbutton" onclick="document.getElementById('user-input').focus()">Wyślij</button>
+							<button id="send-button" type="button" class="btn btn-primary specialbutton" onclick="document.getElementById('user-input').focus()">Wyślij</button>
 						</span>
 					</div>
 				</div>
@@ -61,6 +50,8 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script>
+		
+		
 		//scroll chat window to the bottom
 		function scrollDownChatWindow() {
 			$('#panel-body').scrollTop($('#panel-body')[0].scrollHeight - $('#panel-body')[0].clientHeight);
@@ -101,12 +92,24 @@
 		
 		
 		$(document).ready(function () {
-            $("#user-input").keyup(function () {
+            $("#user-input").keydown(function () {
                 if (event.keyCode === 13) {
                     $("button").trigger("click");
                 }
             });
         });
+		
+
+	</script>
+	<script>
+		function resetConversation() {
+			localStorage.removeItem("conversationId");
+			var conversation = document.getElementById("messages");
+			while (conversation.firstChild) {
+			    conversation.removeChild(conversation.firstChild);
+			}
+			$("#messages").append('<li class="left clearfix"><span class="chat-img pull-left"><img src="images/robo.png" class="img-circle img-responsive" alt="Chelsea"/></span><div class="chat-body clearfix"><div class="header"><b>Chelsea</b></div><p><span class="message-display"></span>Hi! My name is Chelsea. What else can I do for you?</p></div></li>');
+		}
 	</script>
 </body>
 </html>
