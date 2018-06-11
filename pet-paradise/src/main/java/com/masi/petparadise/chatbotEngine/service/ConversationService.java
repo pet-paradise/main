@@ -53,7 +53,7 @@ public class ConversationService {
         conversationFromDb.setCes(rating.getCes());
         conversationFromDb.setCus(rating.getCus());
         System.out.println(rating.getCes() + " " + rating.getCus());
-        return conversationRepository.save(conversation);
+        return conversationRepository.save(conversationFromDb);
     }
 
 }

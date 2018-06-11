@@ -105,7 +105,6 @@
 		
 		$("#send-button").click(function () {
 			var userInputText = $('#user-input').val();
-			console.log(userInputText);
 			$("#messages").append('<li class="right clearfix"><span class="chat-img pull-right"><img src="images/user.png" class="img-circle img-responsive" alt="User"/></span><div class="chat-body clearfix"><div class="header"><b><span class="pull-right">You</span></b></div><div class="clear-both"></div><p><span class="message-display">' + userInputText + '</span> </p></div></li>');
 			$('#user-input').val('');
 			scrollDownChatWindow();
@@ -179,6 +178,7 @@
 					 		+ 'Chatbot’s failure index (CFI): ' + data.cfi
 					 		+ 'Chatbot’s usability score (CUS): ' + data.cus
 					 		+ 'Chatbot’s effectiveness score (CES): ' + data.ces);
+					 	localStorage.removeItem("conversationId");
 					 }
 	          	});
 			} else {
